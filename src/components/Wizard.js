@@ -5,20 +5,20 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
+// import OutlinedInput from "@material-ui/core/OutlinedInput";
+// import FormGroup from "@material-ui/core/FormGroup";
+// import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import Checkbox from "@material-ui/core/Checkbox";
+// import MenuItem from "@material-ui/core/MenuItem";
+// import FormControl from "@material-ui/core/FormControl";
+// import Select from "@material-ui/core/Select";
 import Back from "./common/Back";
 
-const qs = require("query-string");
+// const qs = require("query-string");
 const backgroundShape = require("../images/shape.svg");
 
 const numeral = require("numeral");
@@ -93,7 +93,7 @@ const styles = theme => ({
 });
 
 const getSteps = () => {
-	return ["Info", "Bank", "Loan details", "Terms", "Confirm", "Done"];
+	return ["Profile"];
 };
 
 class Wizard extends Component {
@@ -107,44 +107,44 @@ class Wizard extends Component {
 
 	componentDidMount() {}
 
-	handleNext = () => {
-		this.setState(state => ({
-			activeStep: state.activeStep + 1
-		}));
-	};
+	// handleNext = () => {
+	// 	this.setState(state => ({
+	// 		activeStep: state.activeStep + 1
+	// 	}));
+	// };
 
-	handleBack = () => {
-		this.setState(state => ({
-			activeStep: state.activeStep - 1
-		}));
-	};
+	// handleBack = () => {
+	// 	this.setState(state => ({
+	// 		activeStep: state.activeStep - 1
+	// 	}));
+	// };
 
-	handleReset = () => {
-		this.setState({
-			activeStep: 0
-		});
-	};
+	// handleReset = () => {
+	// 	this.setState({
+	// 		activeStep: 0
+	// 	});
+	// };
 
 	handleChange = event => {
 		this.setState({ [event.target.name]: event.target.value });
 	};
 
-	handleTerms = event => {
-		this.setState({ termsChecked: event.target.checked });
-	};
+	// handleTerms = event => {
+	// 	this.setState({ termsChecked: event.target.checked });
+	// };
 
-	stepActions() {
-		if (this.state.activeStep === 3) {
-			return "Accept";
-		}
-		if (this.state.activeStep === 4) {
-			return "Send";
-		}
-		if (this.state.activeStep === 5) {
-			return "Done";
-		}
-		return "Next";
-	}
+	// stepActions() {
+	// 	if (this.state.activeStep === 3) {
+	// 		return "Accept";
+	// 	}
+	// 	if (this.state.activeStep === 4) {
+	// 		return "Send";
+	// 	}
+	// 	if (this.state.activeStep === 5) {
+	// 		return "Done";
+	// 	}
+	// 	return "Next";
+	// }
 
 	goToDashboard = event => {
 		const queryString = this.props.location.search;
@@ -157,8 +157,8 @@ class Wizard extends Component {
 
 	render() {
 		const { classes } = this.props;
-		const queryString = this.props.location.search;
-		const parsed = queryString ? qs.parse(queryString) : {};
+		// const queryString = this.props.location.search;
+		// const parsed = queryString ? qs.parse(queryString) : {};
 		const steps = getSteps();
 		const { activeStep } = this.state;
 
@@ -205,10 +205,10 @@ class Wizard extends Component {
 															Information
 														</Typography>
 														<Typography variant="body1" gutterBottom>
-															General information about the service
+															General information about your account
 														</Typography>
 													</div>
-													<div>
+													{/* <div>
 														<Button
 															variant="outlined"
 															size="large"
@@ -216,7 +216,7 @@ class Wizard extends Component {
 														>
 															Edit
 														</Button>
-													</div>
+													</div> */}
 												</div>
 												<Grid item container xs={12}>
 													<Grid item xs={6}>
@@ -247,7 +247,7 @@ class Wizard extends Component {
 											</Paper>
 										</div>
 									)}
-									{activeStep === 1 && (
+									{/* {activeStep === 1 && (
 										<div className={classes.smallContainer}>
 											<Paper className={classes.paper}>
 												<div>
@@ -595,8 +595,8 @@ class Wizard extends Component {
 												</FormGroup>
 											</Paper>
 										</div>
-									)}
-									{activeStep === 4 && (
+									)} */}
+									{/* {activeStep === 4 && (
 										<div className={classes.smallContainer}>
 											<Paper className={classes.paper}>
 												<Grid item container xs={12}>
@@ -615,8 +615,8 @@ class Wizard extends Component {
 												</Grid>
 											</Paper>
 										</div>
-									)}
-									{(activeStep === 5 || activeStep === 6) && (
+									)} */}
+									{/* {(activeStep === 5 || activeStep === 6) && (
 										<div className={classes.smallContainer}>
 											<Paper className={classes.paper}>
 												<Grid item container xs={12}>
@@ -637,8 +637,8 @@ class Wizard extends Component {
 												</Grid>
 											</Paper>
 										</div>
-									)}
-									<div className={classes.flexBar}>
+									)} */}
+									{/* <div className={classes.flexBar}>
 										{activeStep !== 5 && (
 											<Button
 												disabled={activeStep === 0}
@@ -662,7 +662,7 @@ class Wizard extends Component {
 										>
 											{this.stepActions()}
 										</Button>
-									</div>
+									</div> */}
 								</div>
 							</Grid>
 						</Grid>

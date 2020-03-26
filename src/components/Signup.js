@@ -9,17 +9,17 @@ import Button from "@material-ui/core/Button";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import MenuItem from "@material-ui/core/MenuItem";
+// import OutlinedInput from "@material-ui/core/OutlinedInput";
+// import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DoneIcon from "@material-ui/icons/Done";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Fade from "@material-ui/core/Fade";
+// import Select from "@material-ui/core/Select";
+// import List from "@material-ui/core/List";
+// import ListItem from "@material-ui/core/ListItem";
+// import ListItemIcon from "@material-ui/core/ListItemIcon";
+// import ListItemText from "@material-ui/core/ListItemText";
+// import DoneIcon from "@material-ui/icons/Done";
+// import CircularProgress from "@material-ui/core/CircularProgress";
+// import Fade from "@material-ui/core/Fade";
 import Back from "./common/Back";
 import TextField from "@material-ui/core/TextField";
 import withFirebaseAuth from "react-with-firebase-auth";
@@ -57,6 +57,8 @@ const styles = theme => ({
 		margin: `0 ${theme.spacing(2)}px`
 	},
 	smallContainer: {
+		flexDirection: "column",
+		alignItems: "",
 		width: "60%"
 	},
 	bigContainer: {
@@ -78,6 +80,8 @@ const styles = theme => ({
 	buttonBar: {
 		marginTop: 32,
 		display: "flex",
+		flexDirection: "column",
+		alignItems: "center",
 		justifyContent: "center"
 	},
 	button: {
@@ -113,65 +117,125 @@ const styles = theme => ({
 });
 
 const getSteps = () => {
-	return ["User", "Signin", "Permission"];
+	return ["Login"];
 };
 
 class Signup extends Component {
 	state = {
 		activeStep: 0,
+		newEmail: "",
+		newPassword: "",
 		email: "",
 		password: "",
 		termsChecked: false,
 		loading: true,
-		labelWidth: 0
+		labelWidth: 0,
+		loggedInUser: ""
 	};
 
-	handleNext = () => {
-		this.setState(state => ({
-			activeStep: state.activeStep + 1
-		}));
-		if (this.state.activeStep === 2) {
-			setTimeout(() => this.props.history.push("/dashboard"), 5000);
-		}
-	};
+	// handleNext = () => {
+	// 	this.setState(state => ({
+	// 		activeStep: state.activeStep + 1
+	// 	}));
+	// 	if (this.state.activeStep === 2) {
+	// 		setTimeout(() => this.props.history.push("/dashboard"), 5000);
+	// 	}
+	// };
 
-	handleBack = () => {
-		this.setState(state => ({
-			activeStep: state.activeStep - 1
-		}));
-	};
+	// handleBack = () => {
+	// 	this.setState(state => ({
+	// 		activeStep: state.activeStep - 1
+	// 	}));
+	// };
 
-	handleReset = () => {
-		this.setState({
-			activeStep: 0
-		});
-	};
+	// handleReset = () => {
+	// 	this.setState({
+	// 		activeStep: 0
+	// 	});
+	// };
 
 	handleChange = event => {
 		this.setState({ [event.target.id]: event.target.value });
 	};
 
-	handleTerms = event => {
-		this.setState({ termsChecked: event.target.checked });
+	// handleGoogleSignIn = event => {
+	// 	this.props.signInWithGoogle
+	// 	this.setState(currentState => {
+	// 		return { ...currentState, newEmail: "", newPassword: "" };
+	// 	});
+	// }
+
+	handleSignUp = submitEvent => {
+		firebase
+			.auth()
+			.createUserWithEmailAndPassword(
+				this.state.newEmail,
+				this.state.newPassword
+			)
+			.catch(function(error) {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				console.log(errorCode, errorMessage);
+				// ...
+			})
+			.then(() => {
+				this.setState(currentState => {
+					return { ...currentState, newEmail: "", newPassword: "" };
+				});
+			});
 	};
 
-	stepActions() {
-		if (this.state.activeStep === 0) {
-			return "Sign in";
-		}
-		if (this.state.activeStep === 1) {
-			return "Next";
-		}
-		if (this.state.activeStep === 2) {
-			return "Accept";
-		}
-		return "Next";
-	}
+	handleSignIn = submitEvent => {
+		firebase
+			.auth()
+			.signInWithEmailAndPassword(this.state.email, this.state.password)
+			.catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				console.log(errorCode, errorMessage);
+				// ...
+			})
+			.then(() => {
+				this.setState(currentState => {
+					return {
+						...currentState,
+						loggedInUser: currentState.email,
+						email: "",
+						password: ""
+					};
+				});
+			});
+	};
+
+	handleSignOut = event => {
+		this.setState({
+			loggedInUser: ""
+		});
+	};
+
+	// handleTerms = event => {
+	// 	this.setState({ termsChecked: event.target.checked });
+	// };
+
+	// stepActions() {
+	// 	if (this.state.activeStep === 0) {
+	// 		return "Sign in";
+	// 	}
+	// 	if (this.state.activeStep === 1) {
+	// 		return "Next";
+	// 	}
+	// 	if (this.state.activeStep === 2) {
+	// 		return "Accept";
+	// 	}
+	// 	return "Next";
+	// }
 
 	render() {
 		const { classes } = this.props;
 		const steps = getSteps();
-		const { activeStep, loading } = this.state;
+		const { activeStep } = this.state;
 
 		const { user, signOut, signInWithGoogle } = this.props;
 
@@ -235,20 +299,104 @@ class Signup extends Component {
 														>
 															Sign-in using Google account
 														</Typography>
-														<header className="App-header">
+														<div className={classes.buttonBar}>
 															{user ? (
-																<p>Hello, {user.displayName}</p>
+																<Typography variant="body1" gutterBottom>
+																	Hello, {user.displayName}
+																</Typography>
 															) : (
-																<p>Please sign in.</p>
+																<Typography variant="body1" gutterBottom>
+																	Please sign in
+																</Typography>
 															)}
 															{user ? (
-																<button onClick={signOut}>Sign out</button>
+																<Button
+																	className={classes.backButton}
+																	size="large"
+																	onClick={signOut}
+																>
+																	Sign out
+																</Button>
 															) : (
-																<button onClick={signInWithGoogle}>
+																<Button
+																	className={classes.backButton}
+																	size="large"
+																	onClick={signInWithGoogle}
+																>
 																	Sign in with Google
-																</button>
+																</Button>
 															)}
-														</header>
+														</div>
+														<Typography
+															style={{
+																textTransform: "uppercase",
+																marginBottom: 20
+															}}
+															color="secondary"
+															gutterBottom
+														>
+															Sign-in using an existing account
+														</Typography>
+														<div className={classes.buttonBar}>
+															{this.state.loggedInUser ? (
+																<Typography variant="body1" gutterBottom>
+																	Hello, {this.state.loggedInUser}
+																</Typography>
+															) : (
+																<Typography variant="body1" gutterBottom>
+																	Please sign in
+																</Typography>
+															)}
+															{this.state.loggedInUser ? (
+																<Button
+																	className={classes.backButton}
+																	size="large"
+																	onClick={this.handleSignOut}
+																>
+																	Sign out
+																</Button>
+															) : (
+																<FormControl
+																	variant="outlined"
+																	className={classes.formControl}
+																>
+																	<Typography variant="body1" gutterBottom>
+																		Email
+																	</Typography>
+																	<TextField
+																		required
+																		id="email"
+																		label="Required"
+																		// defaultValue="email"
+																		variant="outlined"
+																		onChange={this.handleChange}
+																		value={this.state.email}
+																	/>
+																	<br></br>
+																	<Typography variant="body1" gutterBottom>
+																		Password
+																	</Typography>
+																	<TextField
+																		required
+																		id="password"
+																		label="Required"
+																		// defaultValue="password"
+																		variant="outlined"
+																		onChange={this.handleChange}
+																		value={this.state.password}
+																	/>
+																	<br></br>
+																	<Button
+																		onClick={this.handleSignIn}
+																		variant="contained"
+																		color="primary"
+																	>
+																		Sign in
+																	</Button>
+																</FormControl>
+															)}
+														</div>
+
 														<br></br>
 														<Typography
 															style={{
@@ -270,12 +418,12 @@ class Signup extends Component {
 															</Typography>
 															<TextField
 																required
-																id="email"
+																id="newEmail"
 																label="Required"
-																defaultValue="email"
+																// defaultValue="email"
 																variant="outlined"
 																onChange={this.handleChange}
-																value={this.state.email}
+																value={this.state.newEmail}
 															/>
 															<br></br>
 															<Typography variant="body1" gutterBottom>
@@ -283,20 +431,28 @@ class Signup extends Component {
 															</Typography>
 															<TextField
 																required
-																id="password"
+																id="newPassword"
 																label="Required"
-																defaultValue="password"
+																// defaultValue="password"
 																variant="outlined"
 																onChange={this.handleChange}
-																value={this.state.password}
+																value={this.state.newPassword}
 															/>
+															<br></br>
+															<Button
+																onClick={this.handleSignUp}
+																variant="contained"
+																color="primary"
+															>
+																Sign up
+															</Button>
 														</FormControl>
 													</div>
 												</div>
 											</Paper>
 										</div>
 									)}
-									{activeStep === 1 && (
+									{/* {activeStep === 1 && (
 										<div className={classes.smallContainer}>
 											<Paper className={classes.paper}>
 												<Grid item container xs={12}>
@@ -396,8 +552,8 @@ class Signup extends Component {
 												</div>
 											</Paper>
 										</div>
-									)}
-									{activeStep !== 3 && (
+									)} */}
+									{/* {activeStep !== 3 && (
 										<div className={classes.buttonBar}>
 											{activeStep !== 2 ? (
 												<Button
@@ -433,7 +589,7 @@ class Signup extends Component {
 												{this.stepActions()}
 											</Button>
 										</div>
-									)}
+									)} */}
 								</div>
 							</Grid>
 						</Grid>
