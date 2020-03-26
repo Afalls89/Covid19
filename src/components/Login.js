@@ -26,6 +26,7 @@ import withFirebaseAuth from "react-with-firebase-auth";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import firebaseConfig from "../firebaseConfig";
+import fetchProfileData from "./FetchProfileData";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
@@ -120,7 +121,7 @@ const getSteps = () => {
 	return ["Login"];
 };
 
-class Signup extends Component {
+class Login extends Component {
 	state = {
 		activeStep: 0,
 		newEmail: "",
@@ -133,37 +134,9 @@ class Signup extends Component {
 		loggedInUser: ""
 	};
 
-	// handleNext = () => {
-	// 	this.setState(state => ({
-	// 		activeStep: state.activeStep + 1
-	// 	}));
-	// 	if (this.state.activeStep === 2) {
-	// 		setTimeout(() => this.props.history.push("/dashboard"), 5000);
-	// 	}
-	// };
-
-	// handleBack = () => {
-	// 	this.setState(state => ({
-	// 		activeStep: state.activeStep - 1
-	// 	}));
-	// };
-
-	// handleReset = () => {
-	// 	this.setState({
-	// 		activeStep: 0
-	// 	});
-	// };
-
 	handleChange = event => {
 		this.setState({ [event.target.id]: event.target.value });
 	};
-
-	// handleGoogleSignIn = event => {
-	// 	this.props.signInWithGoogle
-	// 	this.setState(currentState => {
-	// 		return { ...currentState, newEmail: "", newPassword: "" };
-	// 	});
-	// }
 
 	handleSignUp = submitEvent => {
 		firebase
@@ -205,6 +178,29 @@ class Signup extends Component {
 						email: "",
 						password: ""
 					};
+				});
+			})
+			.then(() => {
+				firebase.auth().onAuthStateChanged(function(user) {
+					if (user) {
+						console.log(user);
+						// User is signed in.
+						const profileData = {
+							displayName: user.displayName,
+							email: user.email,
+							emailVerified: user.emailVerified,
+							photoURL: user.photoURL,
+							isAnonymous: user.isAnonymous,
+							uid: user.uid,
+							providerData: user.providerData
+						};
+						// ...
+						console.log(profileData.email);
+						fetchProfileData(profileData);
+					} else {
+						// User is signed out.
+						// ...
+					}
 				});
 			});
 	};
@@ -452,144 +448,6 @@ class Signup extends Component {
 											</Paper>
 										</div>
 									)}
-									{/* {activeStep === 1 && (
-										<div className={classes.smallContainer}>
-											<Paper className={classes.paper}>
-												<Grid item container xs={12}>
-													<Grid item xs={12}>
-														<Typography variant="subtitle1" gutterBottom>
-															Sign & confirm
-														</Typography>
-														<Typography variant="body1" gutterBottom>
-															Sign and confirm loan agreement
-														</Typography>
-														<Typography variant="body1" gutterBottom>
-															One text to explain that
-														</Typography>
-													</Grid>
-												</Grid>
-											</Paper>
-										</div>
-									)}
-									{activeStep === 2 && (
-										<div className={classes.smallContainer}>
-											<Paper className={classes.paper}>
-												<div>
-													<div style={{ marginBottom: 32 }}>
-														<Typography variant="subtitle1" gutterBottom>
-															Permissions
-														</Typography>
-														<Typography variant="body1" gutterBottom>
-															We need some permissions to proceed.
-														</Typography>
-													</div>
-													<div>
-														<Typography color="secondary" gutterBottom>
-															Accounts
-														</Typography>
-														<List component="nav">
-															<ListItem>
-																<ListItemIcon>
-																	<DoneIcon />
-																</ListItemIcon>
-																<ListItemText
-																	inset
-																	primary="0297 00988200918"
-																/>
-															</ListItem>
-															<ListItem>
-																<ListItemIcon>
-																	<DoneIcon />
-																</ListItemIcon>
-																<ListItemText
-																	inset
-																	primary="0297 00988200920"
-																/>
-															</ListItem>
-														</List>
-													</div>
-												</div>
-											</Paper>
-										</div>
-									)}
-									{activeStep === 3 && (
-										<div className={classes.bigContainer}>
-											<Paper className={classes.paper}>
-												<div
-													style={{ display: "flex", justifyContent: "center" }}
-												>
-													<div style={{ width: 380, textAlign: "center" }}>
-														<div style={{ marginBottom: 32 }}>
-															<Typography
-																variant="h6"
-																style={{ fontWeight: "bold" }}
-																gutterBottom
-															>
-																Collecting your data
-															</Typography>
-															<Typography variant="body1" gutterBottom>
-																We are processing your request
-															</Typography>
-														</div>
-														<div>
-															<Fade
-																in={loading}
-																style={{
-																	transitionDelay: loading ? "800ms" : "0ms"
-																}}
-																unmountOnExit
-															>
-																<CircularProgress
-																	style={{
-																		marginBottom: 32,
-																		width: 100,
-																		height: 100
-																	}}
-																/>
-															</Fade>
-														</div>
-													</div>
-												</div>
-											</Paper>
-										</div>
-									)} */}
-									{/* {activeStep !== 3 && (
-										<div className={classes.buttonBar}>
-											{activeStep !== 2 ? (
-												<Button
-													disabled={activeStep === 0}
-													onClick={this.handleBack}
-													className={classes.backButton}
-													size="large"
-												>
-													Back
-												</Button>
-											) : (
-												<Button
-													disabled={activeStep === 0}
-													onClick={this.handleBack}
-													className={classes.backButton}
-													size="large"
-												>
-													Cancel
-												</Button>
-											)}
-											<Button
-												variant="contained"
-												color="primary"
-												onClick={this.handleNext}
-												size="large"
-												style={
-													this.state.email.length
-														? { background: classes.button, color: "white" }
-														: {}
-												}
-												disabled={!this.state.email.length}
-											>
-												{this.stepActions()}
-											</Button>
-										</div>
-									)} */}
 								</div>
 							</Grid>
 						</Grid>
@@ -603,4 +461,4 @@ class Signup extends Component {
 export default withFirebaseAuth({
 	providers,
 	firebaseAppAuth
-})(withRouter(withStyles(styles)(Signup)));
+})(withRouter(withStyles(styles)(Login)));
