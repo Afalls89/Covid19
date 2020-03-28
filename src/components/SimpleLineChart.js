@@ -13,12 +13,8 @@ function SimpleLineChart(props) {
 			<BarChart data={data}>
 				<XAxis dataKey="name" />
 				<Tooltip />
-				<Bar dataKey="Type" stackId="a" fill={theme.palette.primary.main} />
-				<Bar
-					dataKey="OtherType"
-					stackId="a"
-					fill={theme.palette.secondary.light}
-				/>
+				<Bar dataKey="deaths" stackId="a" fill={theme.palette.primary.main} />
+				<Bar dataKey="cases" stackId="a" fill={theme.palette.secondary.light} />
 			</BarChart>
 		</ResponsiveContainer>
 	);

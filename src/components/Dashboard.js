@@ -12,8 +12,13 @@ import SimpleLineChart from "./SimpleLineChart";
 import Months from "./common/Months";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Loading from "./common/Loading";
-
 import Topbar from "./Topbar";
+import { data } from "../utils/dataFormating.js";
+
+// const parser = require("simple-excel-to-json");
+// const covid19Data = parser
+// 	.parseXls2Json("../data/COVID-19-geographic-disbtribution-worldwide.xlsx")
+// 	.flat();
 
 const numeral = require("numeral");
 numeral.defaultFormat("0,000");
@@ -114,7 +119,7 @@ const monthRange = Months;
 
 class Dashboard extends Component {
 	state = {
-		loading: true,
+		loading: false,
 		amount: 15000,
 		period: 3,
 		start: 0,
@@ -122,54 +127,54 @@ class Dashboard extends Component {
 		totalInterest: 0,
 		monthlyPayment: 0,
 		totalPayment: 0,
-		data: []
+		data: [{ name: "total for 2020", deaths: 0, cases: 0 }]
 	};
 
-	updateValues() {
-		const { amount, period, start } = this.state;
-		const monthlyInterest =
-			(amount * Math.pow(0.01 * 1.01, period)) / Math.pow(0.01, period - 1);
-		const totalInterest = monthlyInterest * (period + start);
-		const totalPayment = amount + totalInterest;
-		const monthlyPayment =
-			period > start ? totalPayment / (period - start) : totalPayment / period;
+	// updateValues() {
+	// 	const { amount, period, start } = this.state;
+	// 	const monthlyInterest =
+	// 		(amount * Math.pow(0.01 * 1.01, period)) / Math.pow(0.01, period - 1);
+	// 	const totalInterest = monthlyInterest * (period + start);
+	// 	const totalPayment = amount + totalInterest;
+	// 	const monthlyPayment =
+	// 		period > start ? totalPayment / (period - start) : totalPayment / period;
 
-		const data = Array.from({ length: period + start }, (value, i) => {
-			const delayed = i < start;
-			return {
-				name: monthRange[i],
-				Type: delayed ? 0 : Math.ceil(monthlyPayment).toFixed(0),
-				OtherType: Math.ceil(monthlyInterest).toFixed(0)
-			};
-		});
+	// 	const data = Array.from({ length: period + start }, (value, i) => {
+	// 		const delayed = i < start;
+	// 		return {
+	// 			name: monthRange[i],
+	// 			Cases: delayed ? 0 : Math.ceil(monthlyPayment).toFixed(0),
+	// 			Deaths: Math.ceil(monthlyInterest).toFixed(0)
+	// 		};
+	// 	});
 
-		this.setState({
-			monthlyInterest,
-			totalInterest,
-			totalPayment,
-			monthlyPayment,
-			data
-		});
-	}
+	// 	this.setState({
+	// 		monthlyInterest,
+	// 		totalInterest,
+	// 		totalPayment,
+	// 		monthlyPayment,
+	// 		data
+	// 	});
+	// }
 
 	componentDidMount() {
-		this.updateValues();
+		this.setState({ data: data });
 	}
 
-	handleChangeAmount = (event, value) => {
-		this.setState({ amount: value, loading: false });
-		this.updateValues();
-	};
+	// handleChangeAmount = (event, value) => {
+	// 	this.setState({ amount: value, loading: false });
+	// 	this.updateValues();
+	// };
 
-	handleChangePeriod = (event, value) => {
-		this.setState({ period: value, loading: false });
-		this.updateValues();
-	};
+	// handleChangePeriod = (event, value) => {
+	// 	this.setState({ period: value, loading: false });
+	// 	this.updateValues();
+	// };
 
-	handleChangeStart = (event, value) => {
-		this.setState({ start: value, loading: false });
-		this.updateValues();
-	};
+	// handleChangeStart = (event, value) => {
+	// 	this.setState({ start: value, loading: false });
+	// 	this.updateValues();
+	// };
 
 	render() {
 		const { classes } = this.props;
@@ -339,7 +344,7 @@ class Dashboard extends Component {
 														variant="subtitle2"
 														gutterBottom
 													>
-														Type
+														Deaths
 													</Typography>
 													<Typography
 														className={classes.inlining}
@@ -347,7 +352,7 @@ class Dashboard extends Component {
 														variant="h6"
 														gutterBottom
 													>
-														{numeral(monthlyPayment).format()} units
+														{data[0].deaths}
 													</Typography>
 												</div>
 												<div className={classes.inlining}>
@@ -357,7 +362,7 @@ class Dashboard extends Component {
 														variant="subtitle2"
 														gutterBottom
 													>
-														Othe type
+														Cases
 													</Typography>
 													<Typography
 														className={classes.inlining}
@@ -365,7 +370,7 @@ class Dashboard extends Component {
 														variant="h6"
 														gutterBottom
 													>
-														{numeral(monthlyInterest).format()} units
+														{data[0].cases}
 													</Typography>
 												</div>
 											</div>
