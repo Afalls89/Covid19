@@ -5,6 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import CardItem from "./cards/CardItem";
 import Topbar from "./Topbar";
 import SectionHeader from "./typo/SectionHeader";
+import { top50HigestCases } from "../utils/dataFormating.js";
+
 const backgroundShape = require("../images/shape.svg");
 
 const styles = theme => ({
@@ -47,6 +49,14 @@ class Cards extends Component {
 									title="Cards"
 									subtitle="One page with a list of a collection"
 								/>
+								{top50HigestCases.map((countryData, index) => {
+									return (
+										<CardItem
+											key={countryData.country + index}
+											countryData={countryData}
+										/>
+									);
+								})}
 								<CardItem />
 							</Grid>
 						</Grid>

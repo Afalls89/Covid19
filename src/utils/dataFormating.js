@@ -19,7 +19,6 @@
 // );
 
 const covid19Data = require("../data/output.json");
-console.log(covid19Data[0]);
 
 const getTotalDeathsAndCases = data => {
 	const deathsAndCases = data.reduce(
@@ -77,11 +76,10 @@ const getTotalDAndCPerCountry = data => {
 				countryEntry.cases += Number(day.cases);
 			}
 		});
-		// console.log(tally, "Tally <<<<<<<<<<<<<<<<<<<<<<<<<<");
+
 		return tally;
 	}, uniqueCountires);
 
-	console.log(deathsAndCases);
 	return deathsAndCases;
 };
 
@@ -93,8 +91,6 @@ const dataPerCountryPerMonth = getTotalDAndCPerCountry(covid19Data).sort(
 	}
 );
 
-const top50HigestCases = dataPerCountryPerMonth.slice(-50);
-
-console.log(top50HigestCases);
+const top50HigestCases = dataPerCountryPerMonth.slice(-50).reverse();
 
 module.exports = { dataPerCountryPerMonth, top50HigestCases };

@@ -6,17 +6,14 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Slider from "@material-ui/core/Slider";
-import Button from "@material-ui/core/Button";
+// import Button from "@material-ui/core/Button";
 import Avatar from "@material-ui/core/Avatar";
 import SimpleLineChart from "./SimpleLineChart";
 import Months from "./common/Months";
-import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
+// import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Loading from "./common/Loading";
 import Topbar from "./Topbar";
-import {
-	dataPerCountryPerMonth,
-	top50HigestCases
-} from "../utils/dataFormating.js";
+import { top50HigestCases } from "../utils/dataFormating.js";
 
 // const parser = require("simple-excel-to-json");
 // const covid19Data = parser
@@ -158,7 +155,7 @@ class Dashboard extends Component {
 	// }
 
 	componentDidMount() {
-		this.setState({ data: top50HigestCases });
+		this.setState({ data: top50HigestCases.reverse() });
 	}
 
 	// handleChangeAmount = (event, value) => {

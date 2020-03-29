@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import DescriptionIcon from "@material-ui/icons/Description";
-import ButtonBar from "../buttons/ButtonBar";
 
 const styles = theme => ({
 	paper: {
@@ -71,8 +70,19 @@ const styles = theme => ({
 });
 
 class CardItem extends Component {
+	state = {
+		data: { country: "none", deaths: 0, cases: 0 }
+	};
+
+	componentDidMount() {
+		if (this.props.countryData) {
+			this.setState({ data: this.props.countryData });
+		}
+	}
+
 	render() {
 		const { classes } = this.props;
+		const { data } = this.state;
 
 		return (
 			<div className={classes.root}>
@@ -90,10 +100,10 @@ class CardItem extends Component {
 									color="secondary"
 									gutterBottom
 								>
-									Months
+									Country
 								</Typography>
 								<Typography variant="h6" gutterBottom>
-									4 month(s)
+									{data.country}
 								</Typography>
 							</div>
 							<div className={classes.inline}>
@@ -102,10 +112,10 @@ class CardItem extends Component {
 									color="secondary"
 									gutterBottom
 								>
-									Creation date
+									Deaths
 								</Typography>
 								<Typography variant="h6" gutterBottom>
-									01 February 2019
+									{data.deaths}
 								</Typography>
 							</div>
 							<div className={classes.inline}>
@@ -114,25 +124,12 @@ class CardItem extends Component {
 									color="secondary"
 									gutterBottom
 								>
-									Amount
+									Cases
 								</Typography>
 								<Typography variant="h6" gutterBottom>
-									6,600 USD
+									{data.cases}
 								</Typography>
 							</div>
-						</div>
-						<div className={classes.inlineRight}>
-							<Typography
-								style={{ textTransform: "uppercase" }}
-								color="secondary"
-								gutterBottom
-							>
-								Other Amount
-							</Typography>
-							<Typography variant="h4" gutterBottom>
-								Once a month
-							</Typography>
-							<ButtonBar />
 						</div>
 					</div>
 				</Paper>
