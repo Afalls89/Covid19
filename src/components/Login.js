@@ -37,7 +37,7 @@ const providers = {
 
 const backgroundShape = require("../images/shape.svg");
 
-const logo = require("../images/logo.svg");
+const logo = require("../images/Virus.svg");
 
 const numeral = require("numeral");
 numeral.defaultFormat("0");

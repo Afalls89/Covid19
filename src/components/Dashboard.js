@@ -13,7 +13,10 @@ import Months from "./common/Months";
 import VerifiedUserIcon from "@material-ui/icons/VerifiedUser";
 import Loading from "./common/Loading";
 import Topbar from "./Topbar";
-import { data } from "../utils/dataFormating.js";
+import {
+	dataPerCountryPerMonth,
+	top50HigestCases
+} from "../utils/dataFormating.js";
 
 // const parser = require("simple-excel-to-json");
 // const covid19Data = parser
@@ -123,11 +126,8 @@ class Dashboard extends Component {
 		amount: 15000,
 		period: 3,
 		start: 0,
-		monthlyInterest: 0,
-		totalInterest: 0,
-		monthlyPayment: 0,
-		totalPayment: 0,
-		data: [{ name: "total for 2020", deaths: 0, cases: 0 }]
+
+		data: []
 	};
 
 	// updateValues() {
@@ -158,7 +158,7 @@ class Dashboard extends Component {
 	// }
 
 	componentDidMount() {
-		this.setState({ data: data });
+		this.setState({ data: top50HigestCases });
 	}
 
 	// handleChangeAmount = (event, value) => {
@@ -178,15 +178,7 @@ class Dashboard extends Component {
 
 	render() {
 		const { classes } = this.props;
-		const {
-			amount,
-			period,
-			start,
-			monthlyPayment,
-			monthlyInterest,
-			data,
-			loading
-		} = this.state;
+		const { amount, period, start, data, loading } = this.state;
 		const currentPath = this.props.location.pathname;
 
 		return (
@@ -212,17 +204,17 @@ class Dashboard extends Component {
 											Adjust and play with our sliders.
 										</Typography>
 									</div>
-									<div>
+									{/* <div>
 										<Button
 											variant="outlined"
 											className={classes.outlinedButtom}
 										>
 											Get help
 										</Button>
-									</div>
+									</div> */}
 								</div>
 							</Grid>
-							<Grid item xs={12} md={4}>
+							{/* <Grid item xs={12} md={4}>
 								<Paper className={classes.paper}>
 									<div>
 										<Typography variant="subtitle1" gutterBottom>
@@ -255,7 +247,7 @@ class Dashboard extends Component {
 										</div>
 									</div>
 								</Paper>
-							</Grid>
+							</Grid> */}
 							<Grid item xs={12} md={4}>
 								<Paper className={classes.paper}>
 									<div>
@@ -331,7 +323,7 @@ class Dashboard extends Component {
 										<Loading loading={loading} />
 										<div className={loading ? classes.loadingState : ""}>
 											<Typography variant="subtitle1" gutterBottom>
-												Some details
+												Top 50 countries with highest number of Cases
 											</Typography>
 											<Typography variant="body1">
 												Details about the graph
@@ -352,7 +344,7 @@ class Dashboard extends Component {
 														variant="h6"
 														gutterBottom
 													>
-														{data[0].deaths}
+														n/a
 													</Typography>
 												</div>
 												<div className={classes.inlining}>
@@ -370,7 +362,7 @@ class Dashboard extends Component {
 														variant="h6"
 														gutterBottom
 													>
-														{data[0].cases}
+														n/a
 													</Typography>
 												</div>
 											</div>
@@ -380,7 +372,7 @@ class Dashboard extends Component {
 										</div>
 									</Paper>
 								</Grid>
-								<Grid item xs={12} md={4}>
+								{/* <Grid item xs={12} md={4}>
 									<Paper
 										className={classes.paper}
 										style={{ position: "relative" }}
@@ -423,9 +415,9 @@ class Dashboard extends Component {
 													Apply
 												</Button>
 											</div>
-										</div>
-									</Paper>
-								</Grid>
+										</div> */}
+								{/* </Paper>
+								</Grid> */}
 							</Grid>
 						</Grid>
 					</Grid>

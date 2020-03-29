@@ -11,7 +11,7 @@ function SimpleLineChart(props) {
 	return (
 		<ResponsiveContainer width="99%" height={225}>
 			<BarChart data={data}>
-				<XAxis dataKey="name" />
+				<XAxis dataKey="country" />
 				<Tooltip />
 				<Bar dataKey="deaths" stackId="a" fill={theme.palette.primary.main} />
 				<Bar dataKey="cases" stackId="a" fill={theme.palette.secondary.light} />
